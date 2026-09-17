@@ -47,14 +47,14 @@ def fetch_metadata():
     url = data.get('url')
     
     if not url:
-        return jsonify({"success": False, "error": "Please provide a valid media URL."}), 400
+        return jsonify({"success": False, "error": "Please provide a valid media URL."}), 200
 
     result = extract_media_data(url)
     
     if result.get('success'):
         return jsonify(result), 200
     else:
-        return jsonify(result), 400
+        return jsonify(result), 200
 
 @app.route('/api/download')
 def download_media():
