@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialStream - All Media Video Extraction Desk</title>
+
+    <!-- PWA Manifest & Theme Color -->
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#fc5c65">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for exact typography match -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        mono: ['"Space Mono"', 'monospace'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        bgDark: '#0a0a0f',
+                        cardDark: '#12141a',
+                        inputDark: '#1a1d24',
+                        brandRed: '#fc5c65',
+                        brandRedHover: '#eb3b5a',
+                        textMuted: '#8b949e'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0a0f;
+            color: #d1d5db;
+            scroll-behavior: smooth;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased pb-20">
+
+    <div class="max-w-md mx-auto p-4 md:max-w-2xl md:p-8 space-y-12">
+
+        <!-- Header -->
+        <header class="flex justify-between items-center pt-4">
+            <div
+                class="w-12 h-12 bg-brandRed rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(252,92,101,0.3)]">
+                <div class="w-5 h-5 bg-bgDark rounded-[4px]"></div>
+            </div>
+            <div
+                class="flex items-center space-x-2 border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 rounded-full">
+                <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                <span id="engine-status" class="text-emerald-500 text-[10px] font-mono tracking-widest uppercase">Engine
+                    Online</span>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="text-center space-y-5 pt-4">
+            <div class="flex items-center justify-center space-x-4">
+                <div class="h-px bg-brandRed/40 w-12"></div>
+                <span class="text-brandRed text-[10px] font-mono tracking-widest uppercase">Local Extraction Desk</span>
+                <div class="h-px bg-brandRed/40 w-12"></div>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-serif font-bold text-white leading-tight tracking-tight">
+                Extract & render<br />
+                <span class="text-brandRed">public media.</span>
+            </h1>
+            <p class="text-textMuted text-sm md:text-base leading-relaxed px-4 pb-4">
+                Paste a public Social media Reel, Post, or IGTV link. Inspect its metadata, choose a format, and send
+                the clean file to your edit desk.
+            </p>
+
+            <h2
+                class="text-sm sm:text-base md:text-xl font-mono text-white leading-relaxed tracking-wide pt-4 whitespace-nowrap">
+                What type of social media video, <span class="text-brandRed"><b>R U</b></span> download ?
+            </h2>
+        </section>
+
+        <!-- Main Input Card -->
+        <div class="bg-[#0f1117] border border-slate-700/50 rounded-2xl p-4 shadow-2xl relative">
+
+            <!-- Platform Tabs -->
+            <div class="relative mb-5 mt-2">
+                <div class="flex items-center bg-[#13151c] border border-slate-800/80 rounded-xl p-1">
+
+                    <!-- Instagram Tab -->
+                    <button onclick="setPlatform('instagram')" id="tab-instagram"
+                        class="platform-tab flex-1 border border-blue-500 bg-blue-500/5 text-white rounded-lg py-3 flex items-center justify-center space-x-2 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="url(#igGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <defs>
+                                <linearGradient id="igGrad" x1="2" y1="22" x2="22" y2="2">
+                                    <stop offset="0%" stop-color="#f09433" />
+                                    <stop offset="25%" stop-color="#e6683c" />
+                                    <stop offset="50%" stop-color="#dc2743" />
+                                    <stop offset="75%" stop-color="#cc2366" />
+                                    <stop offset="100%" stop-color="#bc1888" />
+                                </linearGradient>
+                            </defs>
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                        <span class="text-sm font-medium">Instagram</span>
+                    </button>
+
+                    <!-- Facebook Tab -->
+                    <button onclick="setPlatform('facebook')" id="tab-facebook"
+                        class="platform-tab flex-1 border border-transparent bg-transparent text-slate-400 hover:text-white rounded-lg py-3 flex items-center justify-center space-x-2 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                            fill="#1877F2">
+                            <path
+                                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                            <path
+                                d="M16.671 15.542l.532-3.469h-3.328v-2.25c0-.949.465-1.874 1.956-1.874h1.514V5.006s-1.374-.235-2.686-.235c-2.741 0-4.533 1.662-4.533 4.669v2.643H7.078v3.469h3.047v8.385a12.09 12.09 0 003.75 0v-8.385h2.796z"
+                                fill="#fff" />
+                        </svg>
+                        <span class="text-sm font-medium">Facebook</span>
+                    </button>
+
+                    <!-- YouTube Tab -->
+                    <button onclick="setPlatform('youtube')" id="tab-youtube"
+                        class="platform-tab flex-1 border border-transparent bg-transparent text-slate-400 hover:text-white rounded-lg py-3 flex items-center justify-center space-x-2 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                            fill="#FF0000">
+                            <path
+                                d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55a3.016 3.016 0 0 0-2.122 2.136C0 8.07 0 12 0 12s0 3.93.501 5.814a3.016 3.016 0 0 0 2.122 2.136c1.872.55 9.377.55 9.377.55s7.505 0 9.377-.55a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"
+                                fill="#FF0000" />
+                            <path d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="#fff" />
+                        </svg>
+                        <span class="text-sm font-medium">YouTube</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Input Field -->
+            <div class="relative mb-4">
+                <i data-lucide="link" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
+
+                <input id="url-input" type="text" placeholder="https://www.instagram.com/..."
+                    class="w-full bg-[#151820] border border-slate-800 rounded-xl py-4 pl-12 pr-24 text-slate-300 placeholder-slate-600 focus:outline-none focus:border-brandRed/50 transition-colors font-mono text-xs" />
+                <button onclick="pasteFromClipboard()"
+                    class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white flex items-center space-x-1 text-[10px] font-mono tracking-widest transition-colors">
+                    <i data-lucide="clipboard" class="w-4 h-4"></i>
+                    <span>PASTE</span>
+                </button>
+            </div>
+
+            <button id="fetch-btn" onclick="fetchMetadata()"
+                class="w-full bg-brandRed hover:bg-brandRedHover text-white text-[12px] font-mono font-bold tracking-widest rounded-xl py-4 flex items-center justify-center space-x-2 transition-colors">
+                <i data-lucide="arrow-down-circle" class="w-5 h-5"></i>
+                <span id="fetch-text">FETCH METADATA</span>
+            </button>
+            <div id="error-msg" class="text-brandRed text-[10px] font-mono mt-3 text-center hidden"></div>
+        </div>
+
+        <!-- Badges -->
+        <div class="flex flex-col items-center gap-3 mt-6">
+            <div class="flex items-center justify-center gap-6 text-[10px] font-mono">
+                <span class="flex items-center space-x-1.5 text-emerald-400">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    <span class="tracking-widest uppercase">Public links only</span>
+                </span>
+                <span class="flex items-center space-x-1.5 text-[#3b82f6]">
+                    <i data-lucide="file-video" class="w-4 h-4"></i>
+                    <span class="tracking-widest uppercase">MP4 & MP3 output</span>
+                </span>
+            </div>
+            <div class="flex items-center justify-center text-[10px] font-mono">
+                <span class="flex items-center space-x-1.5 text-amber-500">
+                    <i data-lucide="clock" class="w-4 h-4"></i>
+                    <span class="tracking-widest uppercase">No account required until download application</span>
+                </span>
+            </div>
+        </div>
+
+        <!-- 01 / MEDIA PREVIEW -->
+        <section id="inspection-section" class="space-y-6 pt-10">
+            <div class="flex items-center justify-between">
+                <div>
+                    <div
+                        class="flex items-center space-x-2 text-brandRed text-[10px] font-mono tracking-widest uppercase mb-2">
+                        <span>01 / Media Preview</span>
+                    </div>
+                    <h2 class="text-3xl font-serif text-white font-bold leading-none">Inspection window</h2>
+                </div>
+                <span id="status-badge"
+                    class="border border-slate-800 text-slate-500 px-3 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest self-start mt-4 bg-cardDark">Awaiting
+                    link</span>
+            </div>
+
+            <div id="preview-container"
+                class="bg-cardDark border border-slate-800/80 rounded-3xl min-h-[20rem] flex flex-col items-center justify-center p-6 text-center overflow-hidden relative">
+
+                <div id="preview-empty">
+                    <div
+                        class="w-12 h-12 bg-inputDark border border-slate-800 rounded-2xl flex items-center justify-center mb-5 mx-auto">
+                        <i data-lucide="upload" class="w-5 h-5 text-slate-400"></i>
+                    </div>
+                    <h3 class="text-xl font-serif text-white font-bold mb-3">Your preview will land here</h3>
+                    <p class="text-textMuted text-sm max-w-[250px] leading-relaxed mx-auto">Inspect a public link to
+                        reveal the creator, caption, engagement pulse, and available export formats.</p>
+                </div>
+
+                <div id="preview-result" class="hidden w-full h-full flex flex-col justify-between">
+                    <div class="flex flex-col w-full z-10 space-y-3">
+                        <video id="res-video" controls
+                            class="w-full h-44 md:h-52 bg-[#0a0a0f] rounded-xl object-contain border border-slate-700 shadow-lg"
+                            src="" poster=""></video>
+
+                        <div class="w-full text-left px-1">
+                            <h4 id="res-uploader"
+                                class="text-brandRed font-mono text-[10px] tracking-widest uppercase mb-1"></h4>
+                            <p id="res-title" class="text-white font-bold text-sm line-clamp-1"></p>
+                        </div>
+                    </div>
+
+                    <button onclick="scrollToExport()"
+                        class="w-full bg-[#1a1d24] text-white border border-slate-700 text-[11px] font-mono font-bold tracking-widest rounded-xl py-3 flex items-center justify-center space-x-2 mt-5 hover:bg-slate-800 transition-colors z-10 cursor-pointer">
+                        <i data-lucide="settings-2" class="w-4 h-4"></i>
+                        <span>CHOOSE FORMAT BELOW</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 02 / EXPORT SETTINGS -->
+        <section id="export-settings-section" class="space-y-6 pt-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <div
+                        class="flex items-center space-x-2 text-brandRed text-[10px] font-mono tracking-widest uppercase mb-2">
+                        <span>02 / Export Settings</span>
+                    </div>
+                    <h2 class="text-3xl font-serif text-white font-bold leading-none">Choose your cut</h2>
+                </div>
+                <i data-lucide="settings-2" class="w-5 h-5 text-slate-500 self-start mt-4"></i>
+            </div>
+
+            <div class="bg-cardDark border border-slate-800/80 rounded-3xl p-6">
+
+                <div id="export-default-state">
+                    <p class="text-textMuted text-sm leading-relaxed mb-6">
+                        Format options unlock after metadata inspection. The local engine keeps every export choice
+                        visible and predictable.
+                    </p>
+                    <button
+                        class="w-full bg-brandRed/20 text-brandRed hover:bg-brandRed/30 border border-brandRed/30 text-[11px] font-mono font-bold tracking-widest rounded-2xl py-4 flex items-center justify-center space-x-2 transition-colors cursor-not-allowed">
+                        <i data-lucide="lock" class="w-4 h-4"></i>
+                        <span>AWAITING METADATA</span>
+                    </button>
+                    <div
+                        class="mt-4 text-center flex items-center justify-center space-x-2 text-[10px] font-mono uppercase tracking-widest text-slate-600">
+                        <span>Actual public stream</span>
+                        <span class="w-1 h-1 bg-slate-700 rounded-full"></span>
+                        <span>Private links rejected</span>
+                    </div>
+                </div>
+
+                <div id="export-active-state" class="hidden">
+                    <p class="text-textMuted text-sm leading-relaxed mb-5">Click any format cut to trigger an immediate
+                        direct download to your device:</p>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="downloadCut('mp4', 'HD')"
+                            class="flex flex-col items-center justify-center p-4 bg-inputDark border border-slate-700 hover:border-[#3b82f6] rounded-xl transition-all group cursor-pointer">
+                            <i data-lucide="video"
+                                class="w-6 h-6 text-[#3b82f6] mb-2 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-white font-bold text-sm">MP4 Video</span>
+                            <span class="text-slate-500 text-[10px] font-mono mt-1">HIGH QUALITY</span>
+                        </button>
+
+                        <button onclick="downloadCut('mp4', 'SD')"
+                            class="flex flex-col items-center justify-center p-4 bg-inputDark border border-slate-700 hover:border-sky-400 rounded-xl transition-all group cursor-pointer">
+                            <i data-lucide="monitor-play"
+                                class="w-6 h-6 text-sky-400 mb-2 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-white font-bold text-sm">MP4 Video</span>
+                            <span class="text-slate-500 text-[10px] font-mono mt-1">STANDARD QUALITY</span>
+                        </button>
+
+                        <button onclick="downloadCut('mp3', '320kbps')"
+                            class="flex flex-col items-center justify-center p-4 bg-inputDark border border-slate-700 hover:border-brandRed rounded-xl transition-all group cursor-pointer">
+                            <i data-lucide="music"
+                                class="w-6 h-6 text-brandRed mb-2 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-white font-bold text-sm">MP3 Audio</span>
+                            <span class="text-slate-500 text-[10px] font-mono mt-1">320 KBPS (HQ)</span>
+                        </button>
+
+                        <button onclick="downloadCut('mp3', '128kbps')"
+                            class="flex flex-col items-center justify-center p-4 bg-inputDark border border-slate-700 hover:border-rose-400 rounded-xl transition-all group cursor-pointer">
+                            <i data-lucide="headphones"
+                                class="w-6 h-6 text-rose-400 mb-2 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-white font-bold text-sm">MP3 Audio</span>
+                            <span class="text-slate-500 text-[10px] font-mono mt-1">128 KBPS (SQ)</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 03 / BATCH QUEUE -->
+        <section class="space-y-6 pt-6">
+            <div class="flex items-center justify-between mb-2">
+                <div>
+                    <div
+                        class="flex items-center space-x-2 text-brandRed text-[10px] font-mono tracking-widest uppercase mb-2">
+                        <span>03 / Batch Queue</span>
+                    </div>
+                    <h2 class="text-3xl font-serif text-white font-bold leading-none mb-3">Line up the edit desk</h2>
+                    <p class="text-textMuted text-sm leading-relaxed pr-4">Drop up to 20 public links, one per line.
+                        Valid links join the queue while blocked or malformed links stay visible for repair.</p>
+                </div>
+            </div>
+
+            <span
+                class="inline-block border border-slate-800 text-slate-400 px-3 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest bg-cardDark">0
+                Queued</span>
+
+            <div class="bg-cardDark border border-slate-800/80 rounded-3xl p-4 mt-4">
+                <textarea rows="4"
+                    class="w-full bg-inputDark border border-slate-800 rounded-2xl p-4 text-slate-500 font-mono text-xs focus:outline-none focus:border-brandRed/50 resize-none"
+                    placeholder="https://www.instagram.com/reel/C8x9kL1p2M0/&#10;https://www.instagram.com/p/anotherCut/"></textarea>
+                <div class="flex justify-between items-center mt-4 px-2">
+                    <span class="text-slate-600 text-[10px] font-mono uppercase tracking-widest">One URL per line</span>
+                    <button
+                        class="bg-inputDark hover:bg-slate-800 border border-slate-700 text-white font-mono text-[10px] tracking-widest uppercase px-4 py-3 rounded-xl flex items-center space-x-2 transition-colors">
+                        <i data-lucide="layers" class="w-4 h-4"></i>
+                        <span>ADD TO QUEUE</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Queue Preview Box -->
+            <div class="bg-cardDark border border-slate-800/80 rounded-3xl p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-white font-bold text-lg">Queue preview</h3>
+                    <span class="text-slate-600 text-[10px] font-mono uppercase tracking-widest">Waiting for
+                        links</span>
+                </div>
+                <div
+                    class="border border-slate-800/60 border-dashed rounded-2xl h-32 flex items-center justify-center text-center p-4">
+                    <p class="text-slate-500 text-sm max-w-[200px]">Your queue is clear. Add multiple links to process
+                        them together.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04 / HISTORY ARCHIVE -->
+        <section class="space-y-6 pt-6 border-t border-slate-800/50 mt-8">
+            <div>
+                <div
+                    class="flex items-center space-x-2 text-brandRed text-[10px] font-mono tracking-widest uppercase mb-2">
+                    <span>04 / History Archive</span>
+                </div>
+                <h2 class="text-3xl font-serif text-white font-bold leading-none mb-3">Recent inspections</h2>
+                <p class="text-textMuted text-sm leading-relaxed mb-6">Your latest link inspections stay here for quick
+                    re-export.</p>
+
+                <button onclick="clearHistory()"
+                    class="text-slate-500 hover:text-white flex items-center space-x-2 text-[10px] font-mono uppercase tracking-widest transition-colors mb-6">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    <span>Clear Archive</span>
+                </button>
+            </div>
+
+            <!-- Dynamic History List -->
+            <div id="history-container" class="space-y-3">
+                <!-- Javascript will populate this section dynamically -->
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer
+            class="pt-12 pb-8 border-t border-slate-800/50 mt-12 text-[10px] font-mono uppercase tracking-widest text-slate-600 space-y-2">
+            <p>Instastream / Editorial Media Studio</p>
+            <p>Public Stream Extractor · Respect Creator Rights</p>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        lucide.createIcons();
+
+        // ----------------------------------------
+        // STATE & GLOBALS
+        // ----------------------------------------
+        let currentExtractedData = null;
+        const HISTORY_KEY = 'instastream_history';
+
+        // Load History on Page Load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderHistory();
+        });
+
+        // ----------------------------------------
+        // PLATFORM TABS
+        // ----------------------------------------
+        const platforms = {
+            instagram: { placeholder: "https://www.instagram.com/..." },
+            facebook: { placeholder: "https://www.facebook.com/..." },
+            youtube: { placeholder: "https://www.youtube.com/watch?v=..." }
+        };
+
+        function setPlatform(selectedPlatform) {
+            document.querySelectorAll('.platform-tab').forEach(tab => {
+                tab.classList.remove('border-blue-500', 'bg-blue-500/5', 'text-white');
+                tab.classList.add('border-transparent', 'bg-transparent', 'text-slate-400');
+            });
+
+            const activeTab = document.getElementById(`tab-${selectedPlatform}`);
+            activeTab.classList.remove('border-transparent', 'bg-transparent', 'text-slate-400');
+            activeTab.classList.add('border-blue-500', 'bg-blue-500/5', 'text-white');
+
+            document.getElementById('url-input').placeholder = platforms[selectedPlatform].placeholder;
+            document.getElementById('url-input').value = "";
+        }
+
+        // ----------------------------------------
+        // HISTORY LOGIC
+        // ----------------------------------------
+        function formatDuration(seconds) {
+            if (!seconds) return "00:00";
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        function saveToHistory(data, originalUrl) {
+            let history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+
+            const newItem = {
+                id: Date.now(),
+                title: data.title || 'Social Media Cut',
+                uploader: data.uploader || 'Creator',
+                thumbnail: data.thumbnail,
+                url: originalUrl,
+                duration: data.duration || 0,
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()
+            };
+
+            history.unshift(newItem);
+
+            // Keep only the last 10 inspections
+            if (history.length > 10) history = history.slice(0, 10);
+
+            localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('history-container');
+            const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+
+            if (history.length === 0) {
+                container.innerHTML = `<p class="text-slate-500 text-sm text-center py-4 border border-slate-800 border-dashed rounded-2xl">No recent inspections found.</p>`;
+                return;
+            }
+
+            container.innerHTML = history.map(item => `
+                <div class="bg-cardDark border border-slate-800/80 rounded-2xl p-3 flex items-center space-x-4 relative">
+                    <div class="relative w-16 h-16 rounded-xl overflow-hidden bg-slate-800 flex-shrink-0">
+                        <img src="${item.thumbnail}" class="w-full h-full object-cover opacity-80" alt="Thumbnail">
+                        <div class="absolute bottom-1 right-1 bg-black/80 px-1.5 py-0.5 rounded text-[9px] font-mono text-white">${formatDuration(item.duration)}</div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-white font-semibold text-sm truncate">${item.title}</h4>
+                        <p class="text-slate-500 text-xs font-mono mt-1 truncate">@${item.uploader}</p>
+                        <p class="text-slate-600 text-[10px] font-mono uppercase tracking-widest mt-2">${item.date}</p>
+                    </div>
+                    <button onclick="reInspect('${item.url}')" class="p-2 text-slate-600 hover:text-white absolute right-3 top-3 transition-colors" title="Re-inspect">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function clearHistory() {
+            localStorage.removeItem(HISTORY_KEY);
+            renderHistory();
+        }
+
+        function reInspect(url) {
+            document.getElementById('url-input').value = url;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            fetchMetadata();
+        }
+
+        // ----------------------------------------
+        // UTILS & API
+        // ----------------------------------------
+        async function pasteFromClipboard() {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById('url-input').value = text;
+            } catch (err) {
+                console.error('Failed to read clipboard: ', err);
+                alert('Clipboard access denied by browser. Please paste manually.');
+            }
+        }
+
+        function scrollToExport() {
+            document.getElementById('export-settings-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function downloadCut(formatType, qualityLabel) {
+            const originalUrl = document.getElementById('url-input').value;
+
+            if (!originalUrl) {
+                alert("Please paste a valid link and inspect it first!");
+                return;
+            }
+
+            alert(`Starting ${qualityLabel} ${formatType.toUpperCase()} extraction...\nPlease wait a moment while the engine processes the file locally. Your download will begin shortly.`);
+
+            const encodedUrl = encodeURIComponent(originalUrl);
+            const downloadUrl = `/api/download?url=${encodedUrl}&ext=${formatType}`;
+
+            const hiddenDownloadAnchor = document.createElement('a');
+            hiddenDownloadAnchor.href = downloadUrl;
+            hiddenDownloadAnchor.setAttribute('download', '');
+            document.body.appendChild(hiddenDownloadAnchor);
+            hiddenDownloadAnchor.click();
+            document.body.removeChild(hiddenDownloadAnchor);
+        }
+
+        async function fetchMetadata() {
+            const urlInput = document.getElementById('url-input').value;
+            const fetchBtn = document.getElementById('fetch-btn');
+            const fetchText = document.getElementById('fetch-text');
+            const errorMsg = document.getElementById('error-msg');
+            const previewEmpty = document.getElementById('preview-empty');
+            const previewResult = document.getElementById('preview-result');
+            const statusBadge = document.getElementById('status-badge');
+
+            const exportDefault = document.getElementById('export-default-state');
+            const exportActive = document.getElementById('export-active-state');
+
+            if (!urlInput) return;
+
+            fetchBtn.disabled = true;
+            fetchBtn.classList.add('opacity-70');
+            fetchText.innerText = "EXTRACTING...";
+            errorMsg.classList.add('hidden');
+
+            try {
+                const response = await fetch('/api/fetch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: urlInput })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentExtractedData = data;
+
+                    // Add to Local Storage History
+                    saveToHistory(data, urlInput);
+
+                    // Populate UI
+                    const videoPlayer = document.getElementById('res-video');
+                    videoPlayer.src = data.url;
+                    videoPlayer.poster = data.thumbnail;
+
+                    document.getElementById('res-uploader').innerText = "@" + data.uploader;
+                    document.getElementById('res-title').innerText = data.title;
+
+                    previewEmpty.classList.add('hidden');
+                    previewResult.classList.remove('hidden');
+
+                    statusBadge.innerText = "LINK RESOLVED";
+                    statusBadge.classList.replace('text-slate-500', 'text-emerald-500');
+                    statusBadge.classList.replace('border-slate-800', 'border-emerald-500/50');
+
+                    exportDefault.classList.add('hidden');
+                    exportActive.classList.remove('hidden');
+
+                    setTimeout(() => {
+                        document.getElementById('inspection-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 150);
+
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (error) {
+                errorMsg.innerText = error.message;
+                errorMsg.classList.remove('hidden');
+            } finally {
+                fetchBtn.disabled = false;
+                fetchBtn.classList.remove('opacity-70');
+                fetchText.innerText = "FETCH METADATA";
+                lucide.createIcons();
+            }
+        }
+    </script>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/static/sw.js')
+                    .then(reg => console.log('Service Worker registered successfully.', reg))
+                    .catch(err => console.error('Service Worker registration failed.', err));
+            });
+        }
+    </script>
+
+    <!-- Firebase SDK Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEx73YIw3t2MsazaEREhd0v78FOItnQ2Q",
+            authDomain: "socialstream-a1351.firebaseapp.com",
+            projectId: "socialstream-a1351",
+            storageBucket: "socialstream-a1351.firebasestorage.app",
+            messagingSenderId: "707925536512",
+            appId: "1:707925536512:web:436fd0837b8a48931a0de5",
+            measurementId: "G-QBRK7R4T4P"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        console.log("Firebase initialized successfully.");
+    </script>
+</body>
+
+</html>
