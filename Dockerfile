@@ -9,8 +9,12 @@ WORKDIR /app
 
 # Install system dependencies (ffmpeg is required for yt-dlp media conversions)
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ffmpeg && \
+    apt-get install -y --no-install-recommends ffmpeg curl unzip && \
     rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL https://deno.land/install.sh | sh
+
+ENV PATH="/root/.deno/bin:${PATH}"
 
 # Copy requirements first to leverage Docker layer caching
 COPY requirements.txt .
@@ -25,4 +29,4 @@ COPY . .
 EXPOSE 8080
 
 # Run the web service using Gunicorn
-CMD gunicorn --bind 0.0.0.0:${PORT:-8080} --workers 2 --threads 4 --timeout 120 app:app
+CMD exec gunicorn --bind 0.0.0.0:${PORT:-8080} --workers 2 --threads 4 --timeout 120 app:app
